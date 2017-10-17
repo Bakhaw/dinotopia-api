@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const path = require('path');
 const router = express.Router();
 
 const Dino = require('../model/dino');
@@ -8,7 +9,7 @@ const Dino = require('../model/dino');
 // where and how the files/images should be saved.
 const storage = multer.diskStorage({
   destination: (request, file, cb) => {
-    cb(null, path.resolve('src', 'uploads'));
+    cb(null, path.resolve('public', 'uploads'));
   },
   filename: (request, file, cb) => {
     cb(null, file.originalname);
@@ -35,7 +36,9 @@ router.get('/:id', (req, res) => {
 // créer un dino
 router.post('/add', upload.single('image'), (req, res) => {
   const newDino = new Dino(req.body);
-  newDino.image = "src/uploads/" + req.file;
+  console.log(req.file);
+  newDino.image = "uploads/" + req.file.filename;
+
   newDino.save((err, dino) => {
     if(err) {res.send(err)}
     res.redirect("http://localhost:3000");

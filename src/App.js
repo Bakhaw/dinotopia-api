@@ -16,9 +16,11 @@ class App extends Component {
     request('http://localhost:8083/', (error, response, body) => {
       if(error) {console.log(error)}
       console.log(body);
-      this.setState({
-        dinos: JSON.parse(body)
-      });
+      if (body) {
+        this.setState({
+          dinos: JSON.parse(body)
+        });
+      }
     })
   }
   render() {
